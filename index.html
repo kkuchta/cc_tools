@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <script src='dist/cc_tools.js'></script>
+  </head>
+  <body>
+    <p>
+      This is just a test to make sure the js file is being included correctly.
+    </p>
+    <p>
+      Actual tests can be found in /test
+    </p>
+    <p>
+      4242 4242 4242 4242 = <span id='result'></span>
+    </p>
+    <script type='text/javascript'>
+      var result = CCTools.possibleProviders('4242424242424242');
+      document.getElementById('result').innerHTML = result;
+    </script>
+  </body>
+</html>

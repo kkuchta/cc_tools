@@ -1,0 +1,5 @@
+- Add option to split diners club or not.  Make the default not to.
+- Second half of the cards
+- More tests for provider functionality
+- More luhn's tests.  Edge cases?
+- Build/test instructions
