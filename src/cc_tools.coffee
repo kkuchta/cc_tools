@@ -30,13 +30,22 @@ iinMap = {
 }
 supportProviders = (provider for provider, _ of iinMap)
 
-possibleProviders = (ccNumber) ->
+possibleProviders = (ccNumber, options={}) ->
+  options.combineDinersClub ?= true
+  options.combineVisa ?= true
+
   unless typeof ccNumber is "string"
     throw "ccNumber is expected to be a string, but was #{ccNumber}"
   if ccNumber.length is 0
     return supportProviders
   candidates = []
   for provider, ranges of iinMap
+
+    if options.combineVisa and provider.match /^visa/
+      provider = 'visa'
+    else if options.combineDinersClub and provider.match /^dinersClub/
+      provider = 'dinersClub'
+
     for range in ranges
       if candidates.indexOf(provider) is -1
         if typeof range is 'number' and _fragmentMatchesValue(ccNumber, range)

@@ -7,7 +7,8 @@ describe "luhns", ->
       '4242424242424242',
       '4111111111111111',
       '347883644164726',
-      '5246468617030400'
+      '5246468617030400',
+      '4563960122001999'
     ]
 
     for number in validNumbers
@@ -99,23 +100,47 @@ describe 'possibleProviders', ->
   }
 
   it "Returns correct providers", ->
+    nonCombineOptions = combineDinersClub: false, combineVisa: false
     for number, possibleProviders of resultMap
-      correctProviders = possibleProviders.sort().join(',')
-      testProviders = CCTools.possibleProviders(number).sort().join(',')
+      correctProviders = possibleProviders.sort()
+      testProviders = CCTools.possibleProviders(number, nonCombineOptions).sort()
       #console.log "correctProviders=#{correctProviders}"
       #console.log "testProviders=#{testProviders}"
-      testProviders.should.equal correctProviders
+      testProviders.should.eql correctProviders
 
   it "handles long numbers", ->
     number = '4903' + '27460193851236798405' 
     possibleProviders = ['switch', 'visa']
-    correctProviders = possibleProviders.sort().join(',')
-    testProviders = CCTools.possibleProviders(number).sort().join(',')
-    testProviders.should.equal correctProviders
+    correctProviders = possibleProviders.sort()
+    testProviders = CCTools.possibleProviders(number).sort()
+    testProviders.should.eql correctProviders
 
   it "handles empty input", ->
-    testProviders = CCTools.possibleProviders('').sort().join(',')
-    testProviders.should == CCTools._supportedProviders.sort().join(',')
+    testProviders = CCTools.possibleProviders('').sort()
+    testProviders.should.eql CCTools._supportedProviders.sort()
 
   it "errors on non-string input", ->
     (-> CCTools.possibleProviders({foo:'bar'})).should.throw()
+
+  it "combines visa providers when combineVisa option is true", ->
+    options = {combineVisa: true}
+    visaNumbers = [
+      '4123', # visa
+      '4026123', # visaElectron
+      '4917' # visaElectron
+    ]
+    for number in visaNumbers
+      CCTools.possibleProviders(number, options).should.containEql 'visa'
+
+  it "combines diners club providers when dinersClub option is true", ->
+    options = {combineDinersClub: true}
+    dcNumbers = [
+      '300',
+      '30',
+      '309',
+      '38123'
+      '54',
+      '55'
+    ]
+    for number in dcNumbers
+      CCTools.possibleProviders(number, options).should.containEql 'dinersClub'
