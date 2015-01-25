@@ -36,23 +36,35 @@ possibleProviders = (ccNumber, options={}) ->
 
   unless typeof ccNumber is "string"
     throw "ccNumber is expected to be a string, but was #{ccNumber}"
+
   if ccNumber.length is 0
-    return supportProviders
+    return _uniq((_combineProvider(p, options) for p in supportProviders))
+
   candidates = []
   for provider, ranges of iinMap
-
-    if options.combineVisa and provider.match /^visa/
-      provider = 'visa'
-    else if options.combineDinersClub and provider.match /^dinersClub/
-      provider = 'dinersClub'
+    provider = _combineProvider(provider, options)
 
     for range in ranges
-      if candidates.indexOf(provider) is -1
-        if typeof range is 'number' and _fragmentMatchesValue(ccNumber, range)
-          candidates.push provider
-        else if Array.isArray(range) and _fragmentMatchesRange(ccNumber, range[0], range[1])
-            candidates.push provider
-  candidates
+      if typeof range is 'number' and _fragmentMatchesValue(ccNumber, range)
+        candidates.push provider
+      else if Array.isArray(range) and _fragmentMatchesRange(ccNumber, range[0], range[1])
+        candidates.push provider
+  _uniq(candidates)
+
+_uniq = (array) ->
+  resultArray = []
+  for element in array
+    if resultArray.indexOf(element) is -1
+      resultArray.push element
+  return resultArray
+
+_combineProvider = (provider, options) ->
+  if options.combineVisa and provider.match /^visa/
+    'visa'
+  else if options.combineDinersClub and provider.match /^dinersClub/
+    'dinersClub'
+  else
+    provider
 
 _fragmentMatchesValue = (fragment, value) ->
   lengthToCompare = Math.min(value.toString().length, fragment.length)
@@ -76,6 +88,7 @@ CCTools = {
   _fragmentMatchesRange: _fragmentMatchesRange
   _fragmentMatchesValue: _fragmentMatchesValue
   _supportedProviders: supportProviders
+  _uniq: _uniq
 }
 
 if module?

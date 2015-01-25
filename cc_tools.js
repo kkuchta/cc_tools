@@ -1,5 +1,5 @@
 (function() {
-  var CCTools, iinMap, luhnValidate, possibleProviders, provider, supportProviders, _, _fragmentMatchesRange, _fragmentMatchesValue;
+  var CCTools, iinMap, luhnValidate, possibleProviders, provider, supportProviders, _, _combineProvider, _fragmentMatchesRange, _fragmentMatchesValue, _uniq;
 
   luhnValidate = function(c){for(var d=c.length,b=0,e=[[0,1,2,3,4,5,6,7,8,9],[0,2,4,6,8,1,3,5,7,9]],a=0;d--;)a+=e[b][parseInt(c.charAt(d),10)],b^=1;return 0===a%10&&0<a};;
 
@@ -37,7 +37,7 @@
   })();
 
   possibleProviders = function(ccNumber, options) {
-    var candidates, range, ranges, _i, _len;
+    var candidates, p, range, ranges, _i, _len;
     if (options == null) {
       options = {};
     }
@@ -51,16 +51,20 @@
       throw "ccNumber is expected to be a string, but was " + ccNumber;
     }
     if (ccNumber.length === 0) {
-      return supportProviders;
+      return _uniq((function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = supportProviders.length; _i < _len; _i++) {
+          p = supportProviders[_i];
+          _results.push(_combineProvider(p, options));
+        }
+        return _results;
+      })());
     }
     candidates = [];
     for (provider in iinMap) {
       ranges = iinMap[provider];
-      if (options.combineVisa && provider.match(/^visa/)) {
-        provider = 'visa';
-      } else if (options.combineDinersClub && provider.match(/^dinersClub/)) {
-        provider = 'dinersClub';
-      }
+      provider = _combineProvider(provider, options);
       for (_i = 0, _len = ranges.length; _i < _len; _i++) {
         range = ranges[_i];
         if (candidates.indexOf(provider) === -1) {
@@ -73,6 +77,28 @@
       }
     }
     return candidates;
+  };
+
+  _uniq = function(array) {
+    var element, resultArray, _i, _len;
+    resultArray = [];
+    for (_i = 0, _len = array.length; _i < _len; _i++) {
+      element = array[_i];
+      if (resultArray.indexOf(element) === -1) {
+        resultArray.push(element);
+      }
+    }
+    return resultArray;
+  };
+
+  _combineProvider = function(provider, options) {
+    if (options.combineVisa && provider.match(/^visa/)) {
+      return 'visa';
+    } else if (options.combineDinersClub && provider.match(/^dinersClub/)) {
+      return 'dinersClub';
+    } else {
+      return provider;
+    }
   };
 
   _fragmentMatchesValue = function(fragment, value) {
@@ -97,7 +123,8 @@
     possibleProviders: possibleProviders,
     _fragmentMatchesRange: _fragmentMatchesRange,
     _fragmentMatchesValue: _fragmentMatchesValue,
-    _supportedProviders: supportProviders
+    _supportedProviders: supportProviders,
+    _uniq: _uniq
   };
 
   if (typeof module !== "undefined" && module !== null) {

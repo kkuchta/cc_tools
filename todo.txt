@@ -1,3 +1,5 @@
 - More luhn's tests.  Edge cases?
 - Strip non-digit characters from input
 - Build/test instructions
+- Add License
+- Fix Gulpfile.coffee showing up in package

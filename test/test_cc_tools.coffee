@@ -98,14 +98,11 @@ describe 'possibleProviders', ->
     '700000': []
     '9000': []
   }
-
   it "Returns correct providers", ->
     nonCombineOptions = combineDinersClub: false, combineVisa: false
     for number, possibleProviders of resultMap
       correctProviders = possibleProviders.sort()
       testProviders = CCTools.possibleProviders(number, nonCombineOptions).sort()
-      #console.log "correctProviders=#{correctProviders}"
-      #console.log "testProviders=#{testProviders}"
       testProviders.should.eql correctProviders
 
   it "handles long numbers", ->
@@ -116,7 +113,7 @@ describe 'possibleProviders', ->
     testProviders.should.eql correctProviders
 
   it "handles empty input", ->
-    testProviders = CCTools.possibleProviders('').sort()
+    testProviders = CCTools.possibleProviders('', combineVisa: false, combineDinersClub: false).sort()
     testProviders.should.eql CCTools._supportedProviders.sort()
 
   it "errors on non-string input", ->
@@ -125,6 +122,7 @@ describe 'possibleProviders', ->
   it "combines visa providers when combineVisa option is true", ->
     options = {combineVisa: true}
     visaNumbers = [
+      '',
       '4123', # visa
       '4026123', # visaElectron
       '4917' # visaElectron
@@ -135,6 +133,7 @@ describe 'possibleProviders', ->
   it "combines diners club providers when dinersClub option is true", ->
     options = {combineDinersClub: true}
     dcNumbers = [
+      '',
       '300',
       '30',
       '309',

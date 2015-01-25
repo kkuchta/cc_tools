@@ -24,7 +24,7 @@
     "bower_components",
     "test",
     "src",
-    "Gulfile",
+    "Gulfile.coffee",
     "index.html",
     "todo.txt"
   ]
