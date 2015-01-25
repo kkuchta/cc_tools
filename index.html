@@ -1,6 +1,6 @@
 <html>
   <head>
-    <script src='dist/cc_tools.js'></script>
+    <script src='cc_tools.js'></script>
   </head>
   <body>
     <p>
@@ -10,11 +10,17 @@
       Actual tests can be found in /test
     </p>
     <p>
-      4242 4242 4242 4242 = <span id='result'></span>
+      4242 4242 4242 4242 = <span id='providerResult'></span> (should be 'visa')
+    </p>
+    <p>
+      4242 4242 4242 4242 = <span id='luhnsResult'></span> (should be 'true')
     </p>
     <script type='text/javascript'>
-      var result = CCTools.possibleProviders('4242424242424242');
-      document.getElementById('result').innerHTML = result;
+      var providerResult = CCTools.possibleProviders('4242424242424242');
+      document.getElementById('providerResult').innerHTML = providerResult;
+
+      var luhnsResult = CCTools.luhnValidate('4242424242424242');
+      document.getElementById('luhnsResult').innerHTML = luhnsResult;
     </script>
   </body>
 </html>

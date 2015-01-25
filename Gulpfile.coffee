@@ -10,7 +10,7 @@ gulp.task('default', ['coffee'], ->
 gulp.task('coffee', ->
   gulp.src('./src/*.coffee')
     .pipe(coffee().on('error', gutil.log))
-    .pipe(gulp.dest('./dist/'))
+    .pipe(gulp.dest('./'))
 )
 
 gulp.task('test', ->
