@@ -1,0 +1,31 @@
+{
+  "name": "cc_tools",
+  "main": "cc_tools.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/kkuchta/cc_tools",
+  "authors": [
+    "Kevin Kuchta <kevin@kevinkuchta.com>"
+  ],
+  "description": "A simple library for credit card luhns validation and provider identification",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "cc",
+    "credit-card",
+    "luhn",
+    "iin",
+    "bank-number"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "src",
+    "Gulfile",
+    "index.html",
+    "todo.txt"
+  ]
+}
