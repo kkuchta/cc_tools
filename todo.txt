@@ -3,3 +3,5 @@
 - Build/test instructions
 - Add License
 - Fix Gulpfile.coffee showing up in package
+
+- inactive cards: allow option to ignore them
